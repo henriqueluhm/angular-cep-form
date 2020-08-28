@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -14,11 +15,16 @@ export class TemplateFormComponent implements OnInit {
     email: null
   }
 
-  onSubmit(form) {
-    console.log(form)
+  onSubmit(formulario) {
+    console.log(formulario)
 
     //  console.log(this.usuario)
-    this.http.post('enderecoServer/formUsuario', JSON.stringify(form.value))
+    this.http.post('http://httpbin.org/post', JSON.stringify(formulario.value))
+    .pipe(map(data =>  data))
+    .subscribe(data => {
+      console.log(data)
+      formulario.form.reset();
+    })
   }
 
 
@@ -64,7 +70,6 @@ export class TemplateFormComponent implements OnInit {
       complemento: data.complemento
     });
 
-    formulario.form.patchVaule();
   }
 
 }
